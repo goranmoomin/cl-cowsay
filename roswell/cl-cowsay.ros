@@ -1,0 +1,81 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp
+  (ql:quickload '(#:unix-opts
+                  #:cl-cowsay) :silent t))
+
+(defpackage #:ros.script.cl-cowsay
+  (:use #:cl
+        #:cl-cowsay)
+  (:import-from #:unix-opts))
+(in-package #:ros.script.cl-cowsay)
+
+(unix-opts:define-opts
+  (:name :help
+   :description "Display this help message"
+   :short #\h)
+  (:name :borg
+   :description "Mode: Borg"
+   :short #\b)
+  (:name :dead
+   :description "Mode: Dead"
+   :short #\d)
+  (:name :greedy
+   :description "Mode: Greedy"
+   :short #\g)
+  (:name :paranoia
+   :description "Mode: Paranoia"
+   :short #\p)
+  (:name :stoned
+   :description "Mode: Stoned"
+   :short #\s)
+  (:name :tired
+   :description "Mode: Tired"
+   :short #\t)
+  (:name :wired
+   :description "Mode: Wired"
+   :short #\w)
+  (:name :youthful
+   :description "Mode: Youthful"
+   :short #\y)
+  (:name :eyes
+   :description "Select the appearance of the cow's eyes."
+   :short #\e
+   :arg-parser #'identity)
+  (:name :tongue
+   :description "The tongue is configurable similarly to the eyes through -T and tongue_string."
+   :short #\T
+   :arg-parser #'identity)
+  (:name :no-wrap
+   :description "If it is specified, the given message will not be word-wrapped."
+   :short #\n)
+  (:name :wrap
+   :description "Specifies roughly where the message should be wrapped. The default is equivalent to -W 40 i.e. wrap words at or before the 40th column."
+   :arg-parser #'parse-integer
+   :short #\W)
+  (:name :file
+   :description "Specifies a cow picture file ('cowfile') to use. It can be either a path to a cow file or the name of one of cows included in the package."
+   :short #\f)
+  (:name :random
+   :description "Select a random cow"
+   :short #\r)
+  (:name :list
+   :description "List all cowfiles included in this package."
+   :short #\l))
+
+(defun main (&rest argv)
+  (multiple-value-bind (options free-args)
+      (unix-opts:get-opts argv)
+    ;; (format t "~a~%~a~%" options free-args)
+    ;; (format t "~a~%" (getf options :eyes))
+    (princ (final-cow (first free-args)
+                      :file (or (getf options :file) "default")
+                      :eye (or (getf options :eyes) "oo")
+                      :tongue (or (getf options :tongue) "  ")
+                      :thoughts (or (getf options :thoughts) "\\")
+                      :wrap (or (getf options :wrap) 40)))))
