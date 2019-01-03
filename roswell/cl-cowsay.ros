@@ -60,6 +60,7 @@ exec ros -Q -- $0 "$@"
    :short #\W)
   (:name :file
    :description "Specifies a cow picture file ('cowfile') to use. It can be either a path to a cow file or the name of one of cows included in the package."
+   :arg-parser #'identity
    :short #\f)
   (:name :random
    :description "Select a random cow"
