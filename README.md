@@ -54,12 +54,12 @@ Currently implemented features are:
 ```
 ; If you didn't install with roswell, clone this repo to anywhere in the asdf registry
 (ql:quickload '#:cl-cowsay)
-(cl-cowsay:final-cow "CL is great"
-                     :file "default"
-                     :eye "oo"
-                     :tongue "  "
-                     :thoughts "\\"
-                     :wrap 40)
+(cl-cowsay:cowsay "CL is great"
+                  :file "default"
+                  :eye "oo"
+                  :tongue "  "
+                  :thoughts "\\"
+                  :wrap 40)
 (princ *)
 ```
 

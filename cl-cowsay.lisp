@@ -6,11 +6,11 @@
         #:cl-cowsay.replacer
         #:cl-cowsay.cows)
   (:import-from #:unix-opts)
-  (:export #:final-cow))
+  (:export #:cowsay))
 
 (in-package #:cl-cowsay)
 
-(defun final-cow (text &key file eye tongue thoughts wrap)
+(defun cowsay (text &key file eye tongue thoughts wrap)
   (format nil "~a~%~a~%"
           (say text wrap)
           (get-cow file (make-variables eye tongue thoughts))))
