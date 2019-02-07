@@ -10,7 +10,12 @@
 
 (in-package #:cl-cowsay)
 
-(defun cowsay (text &key file eye tongue thoughts wrap)
+(defun cowsay (text &key
+                      (file "default")
+                      (eye "oo")
+                      (tongue "  ")
+                      (thoughts "\\")
+                      (wrap 40))
   (format nil "~a~%~a~%"
           (say text wrap)
           (get-cow file (make-variables eye tongue thoughts))))
