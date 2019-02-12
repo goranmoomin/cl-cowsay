@@ -42,10 +42,12 @@ It is being implemented with the goal to be exactly same with the original cowsa
 
 Currently implemented features are:
 
-* option `-f` ("default" by default): Specifies a cow picture file ('cowfile') to use.
-* option `-e` ("oo" by default): Select the appearance of the cow's eyes.
-* option `-T` ("  " by default): The tongue is configurable similarly to the eyes through -T and tongue_string.
-* option `-W` (40 by default): Specifies roughly where the message should be wrapped. The default is equivalent to -W 40 i.e. wrap words at or before the 40th column.
+* option `-f`: Specifies a cow picture file ('cowfile') to use.
+* option `-e`: Select the appearance of the cow's eyes.
+* option `-T`: The tongue is configurable similarly to the eyes through -T and tongue_string.
+* option `-W`: Specifies roughly where the message should be wrapped. The default is equivalent to -W 40 i.e. wrap words at or before the 40th column.
+* option `-b`, `-d`, `-g`, `-p`, `-s`, `-t`, `-w`, `-y`: Mode borg, dead, greedy, paranoia, stoned, tired, wired, youthful.
+
 
 ## Usage as a package
 
