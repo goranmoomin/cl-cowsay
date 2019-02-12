@@ -12,12 +12,22 @@
 
 (defun cowsay (text &key
                       (file "default")
-                      (eye "oo")
-                      (tongue "  ")
+                      mode eyes tongue
                       (thoughts "\\")
                       (wrap 40))
-  (format nil "~a~%~a~%"
-          (say text wrap)
-          (get-cow file (make-variables eye tongue thoughts))))
+  (multiple-value-bind (eyes tongue)
+      (case mode
+        (:borg (values "==" "  "))
+        (:dead (values "xx" "U "))
+        (:greedy (values "$$" "  "))
+        (:paranoia (values "@@" "  "))
+        (:stoned (values "**" "U "))
+        (:tired (values "--" "  "))
+        (:wired (values "OO" "  "))
+        (:youthful (values ".." "  "))
+        (otherwise (values (or eyes "oo") (or tongue "  "))))
+    (format nil "~a~%~a~%"
+            (say text wrap)
+            (get-cow file (make-variables eyes tongue thoughts)))))
 
 (in-package #:cl-cowsay)
