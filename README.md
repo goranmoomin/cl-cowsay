@@ -58,7 +58,7 @@ Currently implemented features are:
 (ql:quickload '#:cl-cowsay)
 (cl-cowsay:cowsay "CL is great"
                   :file "default"
-                  :eye "oo"
+                  :eyes "oo"
                   :tongue "  "
                   :thoughts "\\"
                   :wrap 40)
