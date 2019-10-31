@@ -14,7 +14,7 @@
 (defmacro gen-cows ()
   `(progn
      (defparameter *all-cows* (make-hash-table :test 'equal))
-     ,@(loop :for file-name :in (directory (merge-pathnames (make-pathname :directory '(:relative "cows/")
+     ,@(loop :for file-name :in (directory (merge-pathnames (make-pathname :directory '(:relative "cows")
                                                                            :name :wild
                                                                            :type "cow")
                                                             (or *compile-file-pathname*
