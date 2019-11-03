@@ -78,15 +78,7 @@ exec ros -Q -- $0 "$@"
           (eyes (getf options :eyes))
           (file (getf options :file))
           mode)
-      (setf mode
-            (cond
-              ((getf options :borg) :borg)
-              ((getf options :dead) :dead)
-              ((getf options :greedy) :greedy)
-              ((getf options :paranoia) :paranoia)
-              ((getf options :stoned) :stoned)
-              ((getf options :tired) :tired)
-              ((getf options :youthful) :youthful)))
+      (setf mode (get-properties options '(:borg :dead :greedy :paronoia :stoned :tired :wired :youthful)))
       (push mode arguments)
       (push :mode arguments)
       (when wrap
