@@ -17,6 +17,8 @@ This project is a translation in Common Lisp of the original program and an atte
 
 ## Install
 
+The CLI is implemented with [roswell](https://github.com/roswell/roswell), so you would be able to install `cl-cowsay` with it.
+
 ``` shell
 ros install pcr910303/cl-cowsay
 ```
@@ -40,14 +42,32 @@ cowsay -e '$$' CL is great!
 
 It is being implemented with the goal to be exactly same with the original cowsay.
 
-Currently implemented features are:
+Currently all options are implemented:
 
-* option `-f`: Specifies a cow picture file ('cowfile') to use.
-* option `-e`: Select the appearance of the cow's eyes.
-* option `-T`: The tongue is configurable similarly to the eyes through -T and tongue_string.
-* option `-W`: Specifies roughly where the message should be wrapped. The default is equivalent to -W 40 i.e. wrap words at or before the 40th column.
-* option `-b`, `-d`, `-g`, `-p`, `-s`, `-t`, `-w`, `-y`: Mode borg, dead, greedy, paranoia, stoned, tired, wired, youthful.
+```
+Usage: cl-cowsay [-h|--help] [-b|--borg] [-d|--dead] [-g|--greedy]
+                 [-p|--paranoia] [-s|--stoned] [-t|--tired] [-w|--wired] [-y|--youthful]
+                 [-e|--eyes ARG] [-T|--tongue ARG] [-n|--no-wrap] [-W|--wrap ARG]
+                 [-f|--file ARG] [-r|--random] [-l|--list] [FREE-ARGS]
 
+Available options:
+  -h, --help               Display this help message
+  -b, --borg               Mode: Borg
+  -d, --dead               Mode: Dead
+  -g, --greedy             Mode: Greedy
+  -p, --paranoia           Mode: Paranoia
+  -s, --stoned             Mode: Stoned
+  -t, --tired              Mode: Tired
+  -w, --wired              Mode: Wired
+  -y, --youthful           Mode: Youthful
+  -e, --eyes ARG           Select the appearance of the cow's eyes.
+  -T, --tongue ARG         The tongue is configurable similarly to the eyes through -T and tongue_string.
+  -n, --no-wrap            If it is specified, the given message will not be word-wrapped.
+  -W, --wrap ARG           Specifies roughly where the message should be wrapped. The default is equivalent to -W 40 i.e. wrap words at or before the 40th column.
+  -f, --file ARG           Specifies a cow picture file ('cowfile') to use. It can be either a path to a cow file or the name of one of cows included in the package.
+  -r, --random             Select a random cow
+  -l, --list               List all cowfiles included in this package.
+```
 
 ## Usage as a package
 
