@@ -32,8 +32,8 @@
     (setf cow (cl-ppcre:regex-replace-all "\\$\\{eyes\\}" cow eyes))
     (setf cow (cl-ppcre:regex-replace-all "\\$tongue" cow tongue))
     (setf cow (cl-ppcre:regex-replace-all "\\$\\{tongue\\}" cow tongue))
-    (setf cow (cl-ppcre:regex-replace "\\$eye" cow (char eyes 0)))
-    (setf cow (cl-ppcre:regex-replace "\\$eye" cow (char eyes 1)))
+    (setf cow (cl-ppcre:regex-replace "\\$eye" cow (string (char eyes 0))))
+    (setf cow (cl-ppcre:regex-replace "\\$eye" cow (string (char eyes 1))))
     cow))
 
 (defun extract-cow (str)
