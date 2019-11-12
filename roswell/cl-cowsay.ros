@@ -19,56 +19,72 @@ exec ros -Q -- $0 "$@"
 (unix-opts:define-opts
   (:name :help
    :description "Display this help message"
-   :short #\h)
+   :short #\h
+   :long "help")
   (:name :borg
    :description "Mode: Borg"
-   :short #\b)
+   :short #\b
+   :long "borg")
   (:name :dead
    :description "Mode: Dead"
-   :short #\d)
+   :short #\d
+   :long "dead")
   (:name :greedy
    :description "Mode: Greedy"
-   :short #\g)
+   :short #\g
+   :long "greedy")
   (:name :paranoia
    :description "Mode: Paranoia"
-   :short #\p)
+   :short #\p
+   :long "paranoia")
   (:name :stoned
    :description "Mode: Stoned"
-   :short #\s)
+   :short #\s
+   :long "stoned")
   (:name :tired
    :description "Mode: Tired"
-   :short #\t)
+   :short #\t
+   :long "tired")
   (:name :wired
    :description "Mode: Wired"
-   :short #\w)
+   :short #\w
+   :long "wired")
   (:name :youthful
    :description "Mode: Youthful"
-   :short #\y)
+   :short #\y
+   :long "youthful")
   (:name :eyes
    :description "Select the appearance of the cow's eyes."
    :short #\e
+   :long "eyes"
    :arg-parser #'identity)
   (:name :tongue
    :description "The tongue is configurable similarly to the eyes through -T and tongue_string."
    :short #\T
+   :long "tongue"
    :arg-parser #'identity)
   (:name :no-wrap
    :description "If it is specified, the given message will not be word-wrapped."
-   :short #\n)
+   :short #\n
+   :long "no-wrap")
   (:name :wrap
    :description "Specifies roughly where the message should be wrapped. The default is equivalent to -W 40 i.e. wrap words at or before the 40th column."
    :arg-parser #'parse-integer
-   :short #\W)
+   :short #\W
+   :long "wrap")
   (:name :file
    :description "Specifies a cow picture file ('cowfile') to use. It can be either a path to a cow file or the name of one of cows included in the package."
    :arg-parser #'identity
-   :short #\f)
+   :short #\f
+   :long "file")
   (:name :random
    :description "Select a random cow"
-   :short #\r)
+   :short #\r
+   :long "random")
   (:name :list
    :description "List all cowfiles included in this package."
-   :short #\l))
+   :short #\l
+   :long "list"))
 
 (defun unknown-option (condition)
   (format t "warning: ~s option is unknown!~%" (unix-opts:option condition))
