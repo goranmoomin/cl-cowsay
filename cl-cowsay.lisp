@@ -6,7 +6,8 @@
         #:cl-cowsay.replacer
         #:cl-cowsay.cows
         #:cl-cowsay.default)
-  (:export #:cowsay))
+  (:export #:cowsay
+           #:*cows*))
 
 (in-package #:cl-cowsay)
 
