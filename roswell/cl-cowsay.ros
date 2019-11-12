@@ -6,11 +6,13 @@ exec ros -Q -- $0 "$@"
 (progn ;;init forms
   (ros:ensure-asdf)
   #+quicklisp
-  (ql:quickload '(#:unix-opts
+  (ql:quickload '(#:alexandria
+                  #:unix-opts
                   #:cl-cowsay) :silent t))
 
 (defpackage #:ros.script.cl-cowsay
   (:use #:cl
+        #:alexandria
         #:cl-cowsay)
   (:import-from #:unix-opts))
 
@@ -91,6 +93,7 @@ exec ros -Q -- $0 "$@"
   (invoke-restart 'unix-opts:skip-option))
 
 (defun main (&rest argv)
+  (setf *random-state* (make-random-state t))
   (multiple-value-bind (options free-args)
       (handler-case
           (handler-bind ((unix-opts:unknown-option #'unknown-option))
@@ -104,6 +107,9 @@ exec ros -Q -- $0 "$@"
         (unix-opts:missing-required-option (condition)
           (format t "fatal: ~a~%" condition)
           (unix-opts:exit 1)))
+    (when (getf options :list)
+      (format t "~{~A~%~}" (sort (hash-table-keys *cows*) #'string-lessp))
+      (unix-opts:exit))
     (if (or (getf options :help)
             (null free-args))
         (unix-opts:describe
@@ -112,7 +118,9 @@ exec ros -Q -- $0 "$@"
         (let ((wrap (getf options :wrap))
               (tongue (getf options :tongue))
               (eyes (getf options :eyes))
-              (file (getf options :file))
+              (file (if (getf options :random)
+                        (random-elt (hash-table-keys *cows*))
+                        (getf options :file)))
               mode)
           (setf mode (get-properties options '(:borg :dead :greedy :paronoia :stoned :tired :wired :youthful)))
           (princ (apply #'cowsay `(,(format nil "~{~A~^ ~}" free-args)
