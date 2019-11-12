@@ -11,4 +11,5 @@
   :components ((:file "balloon")
                (:file "replacer")
                (:file "cows")
+               (:file "default")
                (:file "cl-cowsay")))

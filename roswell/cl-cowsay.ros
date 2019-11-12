@@ -72,26 +72,18 @@ exec ros -Q -- $0 "$@"
 (defun main (&rest argv)
   (multiple-value-bind (options free-args)
       (unix-opts:get-opts argv)
-    (let (arguments
-          (wrap (getf options :wrap))
-          (tongue (getf options :tongue))
-          (eyes (getf options :eyes))
-          (file (getf options :file))
-          mode)
-      (setf mode (get-properties options '(:borg :dead :greedy :paronoia :stoned :tired :wired :youthful)))
-      (push mode arguments)
-      (push :mode arguments)
-      (when wrap
-        (push wrap arguments)
-        (push :wrap arguments))
-      (when tongue
-        (push tongue arguments)
-        (push :tongue arguments))
-      (when eyes
-        (push eyes arguments)
-        (push :eyes arguments))
-      (when file
-        (push file arguments)
-        (push :file arguments))
-      (push (format nil "~{~A~^ ~}" free-args) arguments)
-      (princ (apply #'cowsay arguments)))))
+    (if (or (getf options :help)
+            (null free-args))
+        (unix-opts:describe
+         :usage-of "cl-cowsay"
+         :args "[FREE-ARGS]")
+        (let ((wrap (getf options :wrap))
+              (tongue (getf options :tongue))
+              (eyes (getf options :eyes))
+              (file (getf options :file))
+              mode)
+          (setf mode (get-properties options '(:borg :dead :greedy :paronoia :stoned :tired :wired :youthful)))
+          (princ (apply #'cowsay `(,(format nil "~{~A~^ ~}" free-args)
+                                   ,@(when file `(:file ,file))
+                                   :mode ,mode :eyes ,eyes :tongue ,tongue
+                                   ,@(when wrap `(:wrap ,wrap)))))))))

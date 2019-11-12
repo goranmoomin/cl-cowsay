@@ -4,7 +4,9 @@
   (:use #:cl)
   (:import-from #:cl-ppcre)
   (:export #:variables
-           #:make-variables)
+           #:make-variables
+           #:copy-variables
+           #:eyes #:tongue #:thoughts)
   (:export #:replacer))
 
 (in-package #:cl-cowsay.replacer)
@@ -16,6 +18,9 @@
 
 (defun make-variables (eyes tongue thoughts)
   (make-instance 'variables :eyes eyes :tongue tongue :thoughts thoughts))
+
+(defun copy-variables (source)
+  (make-variables (eyes source) (tongue source) (thoughts source)))
 
 (defun replacer (cow variables)
   (setf cow (extract-cow cow))
