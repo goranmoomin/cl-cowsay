@@ -13,6 +13,7 @@ exec ros -Q -- $0 "$@"
   (:use #:cl
         #:cl-cowsay)
   (:import-from #:unix-opts))
+
 (in-package #:ros.script.cl-cowsay)
 
 (unix-opts:define-opts
@@ -69,9 +70,24 @@ exec ros -Q -- $0 "$@"
    :description "List all cowfiles included in this package."
    :short #\l))
 
+(defun unknown-option (condition)
+  (format t "warning: ~s option is unknown!~%" (unix-opts:option condition))
+  (invoke-restart 'unix-opts:skip-option))
+
 (defun main (&rest argv)
   (multiple-value-bind (options free-args)
-      (unix-opts:get-opts argv)
+      (handler-case
+          (handler-bind ((unix-opts:unknown-option #'unknown-option))
+            (unix-opts:get-opts argv))
+        (unix-opts:missing-arg (condition)
+          (format t "fatal: option ~s needs an argument!~%" (unix-opts:option condition)))
+        (unix-opts:arg-parser-failed (condition)
+          (format t "fatal: cannot parse ~s as argument of ~s~%"
+                  (unix-opts:raw-arg condition)
+                  (unix-opts:option condition)))
+        (unix-opts:missing-required-option (condition)
+          (format t "fatal: ~a~%" condition)
+          (unix-opts:exit 1)))
     (if (or (getf options :help)
             (null free-args))
         (unix-opts:describe
