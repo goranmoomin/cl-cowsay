@@ -36,7 +36,7 @@
 
 
 (defun format-balloon (text wrap delimiters)
-  (let* ((lines (split text wrap))
+  (let* ((lines (if wrap (split text wrap) (list text)))
          (max-length (max-length lines))
          balloon)
     (if (null (rest lines))

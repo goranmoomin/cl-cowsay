@@ -115,7 +115,8 @@ exec ros -Q -- $0 "$@"
         (unix-opts:describe
          :usage-of "cl-cowsay"
          :args "[FREE-ARGS]")
-        (let ((wrap (getf options :wrap))
+        (let ((no-wrap (getf options :no-wrap))
+              (wrap (getf options :wrap))
               (tongue (getf options :tongue))
               (eyes (getf options :eyes))
               (file (if (getf options :random)
@@ -126,4 +127,4 @@ exec ros -Q -- $0 "$@"
           (princ (apply #'cowsay `(,(format nil "~{~A~^ ~}" free-args)
                                    ,@(when file `(:file ,file))
                                    :mode ,mode :eyes ,eyes :tongue ,tongue
-                                   ,@(when wrap `(:wrap ,wrap)))))))))
+                                   ,@(when (or no-wrap wrap) `(:wrap ,(if no-wrap nil wrap))))))))))
