@@ -25,4 +25,5 @@
           (apply #'get-cow
                  (override-plist (defaults mode) `(:file ,file :eyes ,eyes :tongue ,tongue :thoughts ,thoughts)))))
 
+
 (in-package #:cl-cowsay)
