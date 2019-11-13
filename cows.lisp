@@ -12,9 +12,9 @@
      :for file-contents := (cl-ppcre:regex-replace-all "\\\\\\\\" (uiop:read-file-string file-name) "\\")
      :collect (cons (pathname-name file-name) file-contents)))
   
-	    
+            
 (defparameter *cows* (alexandria:alist-hash-table
-		      (load-cows-from-filesystem #.(or *compile-file-pathname* *load-pathname*)) :test 'equal))
+                      (load-cows-from-filesystem #.(or *compile-file-pathname* *load-pathname*)) :test 'equal))
 
 (defun get-cow (&key file eyes tongue thoughts)
   (let ((cow (gethash file *cows*)))
