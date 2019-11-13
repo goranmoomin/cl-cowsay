@@ -10,14 +10,14 @@
 
 (defparameter *defaults*
   (alist-hash-table
-   '((:borg . ("==" "  " "\\"))
-     (:dead . ("xx" "U " "\\"))
-     (:greedy . ("$$" "  " "\\"))
-     (:paranoia . ("@@" "  " "\\"))
-     (:stoned . ("**" "U " "\\"))
-     (:tired . ("--" "  " "\\"))
-     (:wired . ("OO" "  " "\\"))
-     (:youthful . (".." "  " "\\")))))
+   '((:borg . (:eyes "==" :tongue "  " :thoughts "\\"))
+     (:dead . (:eyes "xx" :tongue "U " :thoughts "\\"))
+     (:greedy . (:eyes "$$" :tongue "  " :thoughts "\\"))
+     (:paranoia . (:eyes "@@" :tongue "  " :thoughts "\\"))
+     (:stoned . (:eyes "**" :tongue "U " :thoughts "\\"))
+     (:tired . (:eyes "--" :tongue "  " :thoughts "\\"))
+     (:wired . (:eyes "OO" :tongue "  " :thoughts "\\"))
+     (:youthful . (:eyes ".." :tongue "  " :thoughts "\\")))))
 
 (defun defaults (mode)
-  (gethash mode *defaults* '("oo" "  " "\\")))
+  (gethash mode *defaults* '(:eyes "oo" :tongue "  " :thoughts "\\")))

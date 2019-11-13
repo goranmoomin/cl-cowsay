@@ -17,6 +17,7 @@
 (defparameter *cows* (alexandria:alist-hash-table
 		      (load-cows-from-filesystem #.(or *compile-file-pathname* *load-pathname*)) :test 'equal))
 
+(defun get-cow (&key file eyes tongue thoughts)
+  (let ((cow (gethash file *cows*)))
+    (replace-cow cow eyes tongue thoughts)))
 
-(defun get-cow (file eyes tongue thoughts)
-  (let ((cow (gethash file *cows*))) (replace-cow cow eyes tongue thoughts)))
