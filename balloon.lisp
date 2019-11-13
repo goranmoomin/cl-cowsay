@@ -57,7 +57,7 @@
     (join balloon)))
 
 (defun join (strings)
-  (format nil (concatenate 'string "~{~a~^" (make-string 1 :initial-element #\Newline) "~}") strings))
+  (format nil "~{~a~^~%~}" strings))
 
 (defun split (text wrap)
   (loop :with start := 0 :while (< start (length text))
@@ -67,20 +67,20 @@
         :collect (subseq text start wrap-at)
         :do
            (setf start wrap-at)
-           (when (ignore-errors
-                  (eql #\Newline (char text start)))
+           (when (or (eql (length text) start)
+                     (eql #\Newline (char text start)))
              (incf start))))
 
 ;; TODO
-(defun string-width (&rest args)
-  (apply #'length args))
+(defun string-width (string)
+  (length string))
 
 (defun max-length (lines)
   (loop :for line :in lines
         :maximize (string-width line)))
 
 (defun pad (text length)
-  (concatenate 'string text (make-string (- length (length text)) :initial-element #\Space)))
+  (format nil "~va" length text))
 
 (defun top (length)
   (make-string (+ length 2) :initial-element #\_))

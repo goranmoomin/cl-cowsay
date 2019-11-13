@@ -6,10 +6,10 @@
   :license  "MIT"
   :version "0.0.1"
   :serial t
-  :depends-on (#:cl-ppcre
-               #:unix-opts)
+  :depends-on (#:alexandria
+               #:cl-ppcre)
   :components ((:file "balloon")
-               (:file "replacer")
+               (:file "replace-cow")
                (:file "cows")
                (:file "default")
                (:file "cl-cowsay")))

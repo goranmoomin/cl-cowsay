@@ -3,7 +3,6 @@
 (defpackage #:cl-cowsay
   (:use #:cl
         #:cl-cowsay.balloon
-        #:cl-cowsay.replacer
         #:cl-cowsay.cows
         #:cl-cowsay.default)
   (:export #:cowsay
@@ -15,10 +14,8 @@
                       (file "default") mode
                       eyes tongue thoughts
                       (wrap 40))
-  (let ((variables (defaults mode)))
-    (when eyes (setf (eyes variables) eyes))
-    (when tongue (setf (tongue variables) tongue))
-    (when thoughts (setf (thoughts variables) thoughts))
-    (format nil "~a~%~a~%" (say text wrap) (get-cow file variables))))
+  (destructuring-bind (default-eyes default-tongue default-thoughts) (defaults mode)
+    (format nil "~a~%~a~%" (say text wrap)
+            (get-cow file (or eyes default-eyes) (or tongue default-tongue) (or thoughts default-thoughts)))))
 
 (in-package #:cl-cowsay)

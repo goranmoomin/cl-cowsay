@@ -2,28 +2,22 @@
 
 (defpackage #:cl-cowsay.default
   (:use #:cl
-        #:cl-cowsay.replacer)
+        #:alexandria)
   (:export #:*defaults*
            #:defaults))
 
 (in-package #:cl-cowsay.default)
 
-(defmacro gen-defaults ()
-  `(progn
-     (defparameter *defaults* (make-hash-table))
-     ,@(loop :for (mode eyes tongue thoughts)
-               :in '((:borg "==" "  " "\\")
-                     (:dead "xx" "U " "\\")
-                     (:greedy "$$" "  " "\\")
-                     (:paranoia "@@" "  " "\\")
-                     (:stoned "**" "U " "\\")
-                     (:tired "--" "  " "\\")
-                     (:wired "OO" "  " "\\")
-                     (:youthful ".." "  " "\\"))
-             :collect `(setf (gethash ,mode *defaults*)
-                             (make-variables ,eyes ,tongue ,thoughts)))))
-
-(gen-defaults)
+(defparameter *defaults*
+  (alist-hash-table
+   '((:borg . ("==" "  " "\\"))
+     (:dead . ("xx" "U " "\\"))
+     (:greedy . ("$$" "  " "\\"))
+     (:paranoia . ("@@" "  " "\\"))
+     (:stoned . ("**" "U " "\\"))
+     (:tired . ("--" "  " "\\"))
+     (:wired . ("OO" "  " "\\"))
+     (:youthful . (".." "  " "\\")))))
 
 (defun defaults (mode)
-  (copy-variables (gethash mode *defaults* (make-variables "oo" "  " "\\"))))
+  (gethash mode *defaults* '("oo" "  " "\\")))
