@@ -26,7 +26,7 @@ ros install pcr910303/cl-cowsay
 ## Usage
 
 ``` shell
-cowsay -e '$$' CL is great!
+cl-cowsay -e '$$' CL is great!
 ```
 
 ```
