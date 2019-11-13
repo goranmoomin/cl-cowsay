@@ -7,12 +7,11 @@
 (in-package #:cl-cowsay.cows)
 
 (defun load-cows-from-filesystem (cowsay-path)
-  (let (result)
-    (dolist (file-name
-	      (directory (merge-pathnames (make-pathname :directory '(:relative "cows") :name :wild :type "cow")
-					  cowsay-path)) result)
-      (push (cons (pathname-name file-name)
-		  (cl-ppcre:regex-replace-all "\\\\\\\\" (uiop:read-file-string file-name) "\\")) result))))
+  (loop :for file-name :in (directory (merge-pathnames (make-pathname :directory '(:relative "cows") :name :wild :type "cow")
+                                                       cowsay-path))
+     :for file-contents := (cl-ppcre:regex-replace-all "\\\\\\\\" (uiop:read-file-string file-name) "\\")
+     :collect (cons (pathname-name file-name) file-contents)))
+  
 	    
 (defparameter *cows* (alexandria:alist-hash-table
 		      (load-cows-from-filesystem #.(or *compile-file-pathname* *load-pathname*)) :test 'equal))
