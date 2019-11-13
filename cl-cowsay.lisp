@@ -11,6 +11,7 @@
 
 (in-package #:cl-cowsay)
 
+
 (defun override-plist (source override)
   (let ((result (copy-list source)))
     (alexandria:doplist (key val override result)
