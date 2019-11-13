@@ -46,18 +46,18 @@
 	   (max-length (apply #'max (mapcar #'length lines))))
       (flet ((pad (text length) (format nil "~va" length text))
 	     (top (length) (make-string (+ length 2) :initial-element #\_))
-	     (bottom (length) (make-string (+ length 2) :initial-element #\-))
-	     (straddle (line delimiter)
-	       (concatenate 'string (first delimiter) (pad line max-length) " " (rest delimiter))))
-	(format nil "~{~a~^~%~}"
-		(append (list (concatenate 'string " " (top max-length)))
-			(if (null (rest lines))
-			    (straddle (first lines) (del-only delimiters))
-			    (let ((first (first lines)) (middle (butlast (rest lines))) (last (first (last lines))))
-			      (append
-			       (cons (straddle first (del-first delimiters))
-				     (mapcar #'(lambda(line) (straddle line (del-middle delimiters))) middle))
-			       (list (straddle last (del-last delimiters))))))
-			(list (concatenate 'string " " (bottom max-length)))))))))
+	     (bottom (length) (make-string (+ length 2) :initial-element #\-)))
+	(flet ((straddle (line delimiter)
+		 (concatenate 'string (first delimiter) (pad line max-length) " " (rest delimiter))))
+	  (format nil "~{~a~^~%~}"
+		  (append (list (concatenate 'string " " (top max-length)))
+			  (if (null (rest lines))
+			      (straddle (first lines) (del-only delimiters))
+			      (let ((first (first lines)) (middle (butlast (rest lines))) (last (first (last lines))))
+				(append
+				 (cons (straddle first (del-first delimiters))
+				       (mapcar #'(lambda(line) (straddle line (del-middle delimiters))) middle))
+				 (list (straddle last (del-last delimiters))))))
+			  (list (concatenate 'string " " (bottom max-length))))))))))
 
 
