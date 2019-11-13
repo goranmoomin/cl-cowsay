@@ -2,8 +2,7 @@
 
 (defpackage #:cl-cowsay.balloon
   (:use #:cl)
-  (:export #:say
-           #:think))
+  (:export #:say #:think))
 
 (in-package #:cl-cowsay.balloon)
 
@@ -36,54 +35,28 @@
 
 
 (defun format-balloon (text wrap delimiters)
-  (let* ((lines (if wrap (split text wrap) (list text)))
-         (max-length (max-length lines))
-         balloon)
-    (if (null (rest lines))
-        (setf balloon
-              (list (concatenate 'string " " (top max-length))
-                    (concatenate 'string (car (del-only delimiters)) " " (first lines) " " (cdr (del-only delimiters)))
-                    (concatenate 'string " " (bottom max-length))))
-        (setf balloon
-              (append (list (concatenate 'string " " (top max-length)))
-                      (loop :with len := (length lines)
-                            :for index :from 0 :to len
-                            :for line :in lines
-                            :for delimiter := (del-first delimiters) :then (if (/= index (- len 1))
-                                                                              (del-middle delimiters)
-                                                                              (del-last delimiters))
-                            :collect (concatenate 'string (car delimiter) " " (pad line max-length) " " (cdr delimiter)))
-                      (list (concatenate 'string " " (bottom max-length))))))
-    (join balloon)))
+  (flet ((split (text wrap)
+	   (labels ((split (line wrap)
+		      (if (<= (length line) wrap) (list line)
+			  (cons (subseq line 0 wrap) (split (subseq line wrap) wrap)))))
+	     (let (result (lines (cl-ppcre:split (format nil "~%") text)))
+	       (dolist (line lines (nreverse result))
+		 (dolist (sub-line (split line wrap)) (push sub-line result)))))))
+    (let* ((lines (if wrap (split text wrap) (list text)))
+	   (max-length (apply #'max (mapcar #'length lines))))
+      (flet ((pad (text length) (format nil "~va" length text))
+	     (top (length) (make-string (+ length 2) :initial-element #\_))
+	     (bottom (length) (make-string (+ length 2) :initial-element #\-))
+	     (straddle (line delimiter)
+	       (list (concatenate 'string (first delimiter) (pad line max-length) " " (rest delimiter)))))
+	(format nil "~{~a~^~%~}"
+		(append (list (concatenate 'string " " (top max-length)))
+			(if (null (rest lines))
+			    (straddle (first lines) (del-only delimiters))
+			    (let ((first (first lines)) (middle (butlast (rest lines))) (last (first (last lines))))
+			      (append (straddle first (del-first delimiters))
+				      (mapcar #'(lambda(line) (straddle line (del-middle delimiters))) middle)
+				      (straddle last (del-last delimiters)))))
+			(list (concatenate 'string " " (bottom max-length)))))))))
 
-(defun join (strings)
-  (format nil "~{~a~^~%~}" strings))
 
-(defun split (text wrap)
-  (loop :with start := 0 :while (< start (length text))
-        :for next-newline := (position #\Newline text :start (+ start 1))
-        :for wrap-at := (min (or next-newline (length text))
-                             (+ start wrap))
-        :collect (subseq text start wrap-at)
-        :do
-           (setf start wrap-at)
-           (when (or (eql (length text) start)
-                     (eql #\Newline (char text start)))
-             (incf start))))
-
-;; TODO
-(defun string-width (string)
-  (length string))
-
-(defun max-length (lines)
-  (loop :for line :in lines
-        :maximize (string-width line)))
-
-(defun pad (text length)
-  (format nil "~va" length text))
-
-(defun top (length)
-  (make-string (+ length 2) :initial-element #\_))
-
-(defun bottom (length)
-  (make-string (+ length 2) :initial-element #\-))
