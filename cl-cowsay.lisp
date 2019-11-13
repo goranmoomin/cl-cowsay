@@ -11,6 +11,7 @@
 
 (in-package #:cl-cowsay)
 
+
 (defun override-plist (source override)
   (let ((result (copy-list source)))
     (alexandria:doplist (key val override result)
@@ -23,5 +24,6 @@
   (format nil "~a~%~a~%" (say text wrap)
           (apply #'get-cow
                  (override-plist (defaults mode) `(:file ,file :eyes ,eyes :tongue ,tongue :thoughts ,thoughts)))))
+
 
 (in-package #:cl-cowsay)
